@@ -34,43 +34,15 @@ public class Main implements Runnable {
     public void run() {
         boolean shouldStop = false;
         Window.getInstance().getThread().start();
+        bucket.setParticle(0, 0, new Particle("water", ParticleType.FLUID));
 
         while (!shouldStop) {
-            shouldStop = bucket.isFull();
-            Bucket tempBucket = new Bucket(10);
+            shouldStop = Window.getInstance().shouldClose;
 
-            for (int i = 0; i < bucket.getCapacity(); i++) {
-                for (int j = 0; j < bucket.getCapacity(); j++) {
-                    Particle current = bucket.getParticle(i, j);
-
-                    if (current.getType() == ParticleType.WATER) {
-                        if (j < bucket.getCapacity() - 1 && bucket.getParticle(i, j + 1).getType() == ParticleType.VOID) {
-                            tempBucket.setParticle(i, j + 1, current);
-                        } else {
-                            Particle next = bucket.getParticle(i + current.getDirection(), j);
-                            Particle nextTemp = tempBucket.getParticle(i + current.getDirection(), j);
-
-                            if (next != null && nextTemp != null && next.getType() == nextTemp.getType() && nextTemp.getType() == ParticleType.VOID) {
-                                tempBucket.setParticle(i + current.getDirection(), j, current);
-                            } else {
-                                current.setDirection(current.getDirection() * -1);
-                                next = bucket.getParticle(i + current.getDirection(), j);
-                                nextTemp = tempBucket.getParticle(i + current.getDirection(), j);
-                                if (next != null && nextTemp != null && next.getType() == nextTemp.getType() && nextTemp.getType() == ParticleType.VOID) {
-                                    tempBucket.setParticle(i + current.getDirection(), j, current);
-                                } else {
-                                    tempBucket.setParticle(i, j, current);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-            this.bucket = tempBucket;
+            bucket.update();
 
             try {
-                Thread.sleep(100);
+                Thread.sleep(250);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

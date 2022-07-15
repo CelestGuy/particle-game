@@ -18,6 +18,8 @@ public class Window implements Runnable {
     private int width;
     private int height;
 
+    public boolean shouldClose = false;
+
     private Window() {
         thread = new Thread(this);
         panel = new JPanel();
@@ -46,9 +48,8 @@ public class Window implements Runnable {
 
     @Override
     public void run() {
-        boolean shouldClose = false;
         boolean rKeyPressed = false;
-        boolean aKeyPressed = false;
+        boolean aKeyPressed;
         frame.setVisible(true);
 
         while (!shouldClose) {
@@ -66,7 +67,7 @@ public class Window implements Runnable {
 
             aKeyPressed = Keyboard.getInstance().isKeyDown(KeyEvent.VK_A);
             if (aKeyPressed) {
-                Main.getInstance().getBucket().add(new Particle("water", ParticleType.WATER));
+                Main.getInstance().getBucket().setParticle(0 ,0, new Particle("water", ParticleType.FLUID));
             }
 
             shouldClose = Keyboard.getInstance().isKeyDown(KeyEvent.VK_ESCAPE);
@@ -94,7 +95,7 @@ public class Window implements Runnable {
                         g2.setColor(particle.getType().getColor());
                         g2.fillRect(i * 32, j * 32, 32, 32);
                     }
-                    g2.setColor(Color.white);
+                    g2.setColor(Color.DARK_GRAY);
                     g2.drawRect(i * 32, j * 32, 32, 32);
                 }
             }

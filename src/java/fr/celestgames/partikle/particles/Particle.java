@@ -4,7 +4,6 @@ public class Particle {
     private final String id;
     private ParticleType type;
     private int direction;
-    private boolean falling;
 
     public Particle(String id, ParticleType type) {
         this.id = id;
@@ -30,13 +29,5 @@ public class Particle {
 
     public void setDirection(int direction) {
         this.direction = direction;
-    }
-
-    public boolean isFalling() {
-        return falling;
-    }
-
-    public void setFalling(boolean falling) {
-        this.falling = falling;
     }
 }
